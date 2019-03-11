@@ -13,8 +13,8 @@ async function youtube(req, res) {
   const options = req.body.radio;
   const time = req.body.time;
   const headless = req.body.headless;
-  const like = (options == 'True') ? '"a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer"'' : '"a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer"';
-  //res.send('started');
+  const like = (options == 'Like') ? "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer" : "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer";
+  res.send('started');
   try {
     for (let z = 0; z < arr2.length; z++) {
       const browser = await puppeteer.launch({
@@ -23,7 +23,6 @@ async function youtube(req, res) {
       });
       const context = await browser.createIncognitoBrowserContext();
       const page = await context.newPage();
-      console.log(like);
       await page.goto('https://accounts.google.com/signin/v2/identifier?hl=en&continue=https%3A%2F%2Fwww.google.com%2F&flowName=GlifWebSignIn&flowEntry=AddSession');
       await page.type('.whsOnd.zHQkBf', arr2[z].email);
       await page.click('div[id="identifierNext"]');
@@ -56,11 +55,12 @@ async function youtube(req, res) {
             await page.waitFor(time);
             await page.goto(link);
             await page.waitFor(time);
-            await page.evaluate((like) => {
+            await page.evaluate(function(like) {
+              console.log('1st block', like);
               if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
                 document.querySelector(like).click()
               }
-            })
+            }, like)
             await browser.close();
           } else {for (let x = 0; x < arr.length; x++) {
             await page.goto(arr[x]);
@@ -73,12 +73,12 @@ async function youtube(req, res) {
             await page.waitFor(time);
             await page.goto(link)
             await page.waitFor(time);
-            await page.evaluate(() => {
+            await page.evaluate(function(like) {
               if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
                 document.querySelector(like).click()
               }
               else (console.log("not found"))
-            });
+            }, like);
             if (x == arr.length - 1) {
               await context.close();
             }
