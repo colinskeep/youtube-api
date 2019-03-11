@@ -18,7 +18,7 @@ async function youtube(req, res) {
   try {
     for (let z = 0; z < arr2.length; z++) {
       const browser = await puppeteer.launch({
-        headless: false,
+        headless: headless,
         'args': ['--incognito'],
       });
       const context = await browser.createIncognitoBrowserContext();
