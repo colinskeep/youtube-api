@@ -75,7 +75,7 @@ async function youtube(req, res) {
               if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
                 document.querySelector(like).click()
               }
-              else (console.log("not found"))
+              else (console.log("not found"));
             }, like);
             if (x == arr.length - 1) {
               await context.close();
