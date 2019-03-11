@@ -13,7 +13,7 @@ async function youtube(req, res) {
   const options = req.body.radio;
   const time = req.body.time;
   const headless = req.body.headless;
-  const like = (options == 'Like') ? "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer" : "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer";
+  const like = (options == 'Like') ? "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer" : "#top-level-buttons > ytd-toggle-button-renderer:nth-child(2) > a";
   res.send('started');
   try {
     for (let z = 0; z < arr2.length; z++) {
