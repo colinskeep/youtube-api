@@ -9,6 +9,6 @@
       "mocha": true,
   },
   "rules": {
-      "max-len": false,
-    }
+    "max-len": "off",
+    },
 }

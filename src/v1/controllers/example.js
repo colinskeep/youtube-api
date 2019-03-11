@@ -7,7 +7,6 @@ require('dotenv').config();
  * @param {string} res - outgoing response
  */
 async function youtube(req, res) {
-  console.log(req.body)
   const link = req.body.link;
   const arr2 = req.body.logins;
   const options = req.body.radio;
@@ -39,9 +38,9 @@ async function youtube(req, res) {
         await page.waitFor(time);
         await page.click('div[class="ZFr60d CeoRYc"]');
       }
-      console.log('logged in: ', arr2[z].email)
+      console.log('logged in: ', arr2[z].email);
       await page.goto('https://www.youtube.com/channel_switcher');
-      console.log('checking brand accounts.....')
+      console.log('checking brand accounts.....');
       await page.waitFor(time);
       const hrefs = await page.$$eval('a', as => as.map(a => a.href));
       let arr = [];
@@ -56,9 +55,8 @@ async function youtube(req, res) {
             await page.goto(link);
             await page.waitFor(time);
             await page.evaluate(function(like) {
-              console.log('1st block', like);
               if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
-                document.querySelector(like).click()
+                document.querySelector(like).click();
               }
             }, like)
             await browser.close();
