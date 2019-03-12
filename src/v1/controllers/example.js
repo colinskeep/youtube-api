@@ -43,13 +43,12 @@ async function youtube(req, res) {
       console.log('checking brand accounts.....');
       if (await page.$('#identity-prompt-lb > div > div') !== null) {
         await page.waitFor(time);
-        console.log('select user');
+        console.log('selecting user');
         await page.click('#identity-prompt-account-list > ul > label:nth-child(1) > li > span > span.yt-uix-form-input-radio-container > input')
         await page.click('#identity-prompt-confirm-button > span')
       }
       await page.waitFor(time);
       const hrefs = await page.$$eval('a', as => as.map(a => a.href));
-      console.log(hrefs);
       let arr = [];
       for (let i = 0; i < hrefs.length; i++) {
         if (hrefs[i].indexOf('pageid') > -1) {

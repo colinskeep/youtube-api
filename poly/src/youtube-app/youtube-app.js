@@ -120,11 +120,11 @@ class YoutubeApp extends PolymerElement {
       headless: this.headless
     };
     const url = 'http://localhost:9000/api/v1/example/example';
-    // this.link = '';
-    // this.accinfo = '';
-    // this.time = '';
-    // this.selected = '';
-    // this.headless = '';
+    this.link = '';
+    this.accinfo = '';
+    this.time = '';
+    this.selected = '';
+    this.headless = '';
     fetch(url, {
       method: 'POST',
       body: JSON.stringify(data),
