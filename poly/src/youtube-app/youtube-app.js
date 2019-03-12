@@ -23,7 +23,7 @@ class YoutubeApp extends PolymerElement {
         }
         paper-card {
           text-align: center;
-          background-image: url(images/giphy3.gif);
+          /* background-image: url(images/giphy3.gif); */
           width: 100%;
           --paper-card-header-color: #fff !important;
         }
@@ -57,7 +57,7 @@ class YoutubeApp extends PolymerElement {
         <source src="./images/noise.mp3" type="audio/mpeg">
       </audio>
         <paper-card heading="youTubeZcliKZ0R">
-        <img src="/images/giphy2.gif" />
+        <!-- <img src="/images/giphy2.gif" /> -->
         <div class="card-content">
           <paper-input label="youTubeZ Linkz0r" value="{{link}}"></paper-input>
         </div>
@@ -133,6 +133,7 @@ class YoutubeApp extends PolymerElement {
       }
     }).then(response => {
       console.log(response);
+      return response.json();
     }).catch(err => {
       console.log(err);
     });
