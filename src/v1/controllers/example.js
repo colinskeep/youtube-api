@@ -42,6 +42,11 @@ async function youtube(req, res) {
           await page.click('div[class="ZFr60d CeoRYc"]');
           await page.waitFor(time);
           await page.click('div[class="ZFr60d CeoRYc"]');
+          await page.waitFor(time);
+          if (page.url().indexOf('https://accounts.google.com/signin/v2/challenge/') > -1) {
+            console.log('unable to authenticate: ', arr[z].email, 'with recovery email');
+            continue;
+          }
         }
       }
       console.log('logged in: ', arr2[z].email);
