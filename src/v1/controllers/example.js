@@ -39,10 +39,14 @@ async function youtube(req, res) {
           await page.click('div[class="vdE7Oc"]');
           await page.waitFor(time);
           await page.type('.whsOnd.zHQkBf', process.env.USER_RECOVERY_EMAIL);
-          await page.click('div[class="ZFr60d CeoRYc"]');
-          await page.waitFor(time);
-          await page.click('div[class="ZFr60d CeoRYc"]');
-          await page.waitFor(time);
+          if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
+            await page.click('div[class="ZFr60d CeoRYc"]');
+            await page.waitFor(time);
+          }
+          if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
+            await page.click('div[class="ZFr60d CeoRYc"]');
+            await page.waitFor(time);
+          }
           if (page.url().indexOf('https://accounts.google.com/signin/v2/challenge/') > -1) {
             console.log('unable to authenticate: ', arr[z].email, 'with recovery email');
             continue;
