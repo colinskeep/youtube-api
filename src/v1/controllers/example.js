@@ -11,8 +11,8 @@ async function youtube(req, res) {
   const arr2 = req.body.logins;
   const options = req.body.radio;
   const time = req.body.time;
-  const headless = req.body.headless;
-  const like = (options == 'Like') ? "a.yt-simple-endpoint.style-scope.ytd-toggle-button-renderer" : "#top-level-buttons > ytd-toggle-button-renderer:nth-child(2) > a";
+  const headless = (req.body.headless == 'true');
+  const like = (options == 'Like') ? "#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a" : "#top-level-buttons > ytd-toggle-button-renderer:nth-child(2) > a";
   res.send('started');
   try {
     for (let z = 0; z < arr2.length; z++) {
@@ -41,8 +41,15 @@ async function youtube(req, res) {
       console.log('logged in: ', arr2[z].email);
       await page.goto('https://www.youtube.com/channel_switcher');
       console.log('checking brand accounts.....');
+      if (await page.$('#identity-prompt-lb > div > div') !== null) {
+        await page.waitFor(time);
+        console.log('select user');
+        await page.click('#identity-prompt-account-list > ul > label:nth-child(1) > li > span > span.yt-uix-form-input-radio-container > input')
+        await page.click('#identity-prompt-confirm-button > span')
+      }
       await page.waitFor(time);
       const hrefs = await page.$$eval('a', as => as.map(a => a.href));
+      console.log(hrefs);
       let arr = [];
       for (let i = 0; i < hrefs.length; i++) {
         if (hrefs[i].indexOf('pageid') > -1) {
@@ -56,31 +63,35 @@ async function youtube(req, res) {
             await page.waitFor(time);
             await page.evaluate(function(like) {
               if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
+                console.log('added input');
                 document.querySelector(like).click();
               }
             }, like)
             await browser.close();
-          } else {for (let x = 0; x < arr.length; x++) {
-            await page.goto(arr[x]);
-            await page.waitFor(time);
-            if (page.url().indexOf('https://accounts.google.com/signin/v2/') > -1) {
+          } else {
+            for (let x = 0; x < arr.length; x++) {
+              console.log('attempting brand #', x)
+              await page.goto(arr[x]);
               await page.waitFor(time);
-              await page.type('.whsOnd.zHQkBf', arr2[z].password);
-              await page.click('div[id="passwordNext"]');
-            }
-            await page.waitFor(time);
-            await page.goto(link)
-            await page.waitFor(time);
-            await page.evaluate(function(like) {
-              if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
-                document.querySelector(like).click()
+              if (page.url().indexOf('https://accounts.google.com/signin/v2/') > -1) {
+                await page.waitFor(time);
+                await page.type('.whsOnd.zHQkBf', arr2[z].password);
+                await page.click('div[id="passwordNext"]');
               }
-              else (console.log("not found"));
-            }, like);
-            if (x == arr.length - 1) {
-              await context.close();
+              await page.waitFor(time);
+              await page.goto(link)
+              await page.waitFor(time);
+              await page.evaluate(function(like) {
+                if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
+                  document.querySelector(like).click()
+                  console.log('added input')
+                }
+                else (console.log("not found"));
+              }, like);
+              if (x == arr.length - 1) {
+                await context.close();
+              }
             }
-          }
           }
         }
       }
