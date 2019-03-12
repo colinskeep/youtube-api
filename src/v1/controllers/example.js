@@ -29,6 +29,10 @@ async function youtube(req, res) {
       await page.type('.whsOnd.zHQkBf', arr2[z].password);
       await page.click('div[id="passwordNext"]');
       await page.waitFor(time);
+      if (page.url().indexOf('https://accounts.google.com/signin/v2/sl/pwd') > -1 && page.evaluate(() => document.querySelector('#view_container > div > div > div.pwWryf.bxPAYd > div > div.WEQkZc > div > form > content > section > div > content > div.Xk3mYe.VxoKGd.Jj6Lae > div.xgOPLd > div:nth-child(2) > content').innerText == 'Wrong password. Try again or click Forgot password to reset it.')) {
+        console.log('invalid password for email: ', arr2[z].email);
+        continue;
+      }
       if (page.url().indexOf('https://accounts.google.com/signin/v2/challenge/') > -1) {
         console.log('verification needed');
         if (await page.$('div[class="vdE7Oc"]') !== null) {
