@@ -31,12 +31,14 @@ async function youtube(req, res) {
       await page.waitFor(time);
       if (page.url().indexOf('https://accounts.google.com/signin/v2/challenge/') > -1) {
         console.log('verification needed');
-        await page.click('div[class="vdE7Oc"]');
-        await page.waitFor(time);
-        await page.type('.whsOnd.zHQkBf', process.env.USER_RECOVERY_EMAIL);
-        await page.click('div[class="ZFr60d CeoRYc"]');
-        await page.waitFor(time);
-        await page.click('div[class="ZFr60d CeoRYc"]');
+        if (await page.$('div[class="vdE7Oc"]') !== null) {
+          await page.click('div[class="vdE7Oc"]');
+          await page.waitFor(time);
+          await page.type('.whsOnd.zHQkBf', process.env.USER_RECOVERY_EMAIL);
+          await page.click('div[class="ZFr60d CeoRYc"]');
+          await page.waitFor(time);
+          await page.click('div[class="ZFr60d CeoRYc"]');
+        }
       }
       console.log('logged in: ', arr2[z].email);
       await page.goto('https://www.youtube.com/channel_switcher');
