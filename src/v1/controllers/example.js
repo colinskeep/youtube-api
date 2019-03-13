@@ -14,8 +14,8 @@ async function youtube(req, res) {
   const headless = (req.body.headless == 'true');
   const like = (options == 'Like') ? "#top-level-buttons > ytd-toggle-button-renderer:nth-child(1) > a" : "#top-level-buttons > ytd-toggle-button-renderer:nth-child(2) > a";
   res.send('started');
-  try {
-    for (let z = 0; z < arr2.length; z++) {
+  for (let z = 0; z < arr2.length; z++) {
+    try {
       const browser = await puppeteer.launch({
         headless: headless,
         executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
@@ -107,9 +107,8 @@ async function youtube(req, res) {
               await page.waitFor(time);
               await page.evaluate(function(like) {
                 if (document.querySelector(like) && document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
-                  document.querySelector(like).click()
-                }
-                else (console.log("not found"));
+                  document.querySelector(like).click();
+                } else (console.log("not found"));
               }, like);
               if (x == arr.length - 1) {
                 await browser.close();
@@ -118,9 +117,10 @@ async function youtube(req, res) {
           }
         }
       }
+    } catch (err) {
+      console.log(err);
+      continue;
     }
-  } catch (err) {
-    console.log(err);
   }
 }
 module.exports = {
