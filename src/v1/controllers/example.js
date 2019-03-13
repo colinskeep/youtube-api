@@ -64,13 +64,15 @@ async function youtube(req, res) {
       }
       await page.waitFor(time);
       const hrefs = await page.$$eval('a', as => as.map(a => a.href));
+      console.log(hrefs);
       let arr = [];
+      arr.push('https://www.youtube.com/signin?feature=channel_switcher&next=%2F&authuser=0&action_handle_signin=true&skip_identity_prompt=True');
       for (let i = 0; i < hrefs.length; i++) {
         if (hrefs[i].indexOf('pageid') > -1) {
           arr.push(hrefs[i]);
         }
         if (i == hrefs.length - 1) {
-          console.log('found ', arr.length, 'brand accounts for', arr2[z].email);
+          console.log('found ', arr.length, 'main + brand accounts for', arr2[z].email);
           if (arr.length == 0 ) {
             await page.waitFor(time);
             await page.goto(link);
@@ -96,9 +98,8 @@ async function youtube(req, res) {
               await page.goto(link)
               await page.waitFor(time);
               await page.evaluate(function(like) {
-                if (document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
+                if (document.querySelector(like) && document.querySelector(like).innerHTML.indexOf('aria-pressed="true"') == -1 ) {
                   document.querySelector(like).click()
-                  console.log('added input')
                 }
                 else (console.log("not found"));
               }, like);
