@@ -18,6 +18,7 @@ async function youtube(req, res) {
     for (let z = 0; z < arr2.length; z++) {
       const browser = await puppeteer.launch({
         headless: headless,
+        executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
         //'args': ['--incognito'],
       });
       //const context = await browser.createIncognitoBrowserContext();
@@ -48,8 +49,10 @@ async function youtube(req, res) {
             await page.click('div[class="ZFr60d CeoRYc"]');
           }
           await page.waitFor(time);
-          if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
-            await page.click('div[class="ZFr60d CeoRYc"]');
+          if (page.url().indexOf('https://www.google.com') < 0) {
+            if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
+              await page.click('div[class="ZFr60d CeoRYc"]');
+            }
           }
           await page.waitFor(time);
           if (page.url().indexOf('https://accounts.google.com/signin/v2/challenge/') > -1) {
