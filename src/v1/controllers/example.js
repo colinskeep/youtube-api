@@ -109,7 +109,7 @@ async function youtube(req, res) {
                 else (console.log("not found"));
               }, like);
               if (x == arr.length - 1) {
-                await context.close();
+                await browser.close();
               }
             }
           }
