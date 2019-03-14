@@ -48,7 +48,7 @@ async function youtube(req, res) {
           if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
             await page.click('div[class="ZFr60d CeoRYc"]');
           }
-          await page.waitFor(time);
+          await page.waitFor(5000);
           if (page.url().indexOf('https://www.google.com') < 0) {
             if (await page.$('div[class="ZFr60d CeoRYc"]') !== null) {
               await page.click('div[class="ZFr60d CeoRYc"]');
