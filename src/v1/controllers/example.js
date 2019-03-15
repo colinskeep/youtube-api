@@ -19,7 +19,7 @@ async function youtube(req, res) {
       const browser = await puppeteer.launch({
         headless: headless,
         executablePath: 'C:\\Program Files (x86)\\Google\\Chrome\\Application\\chrome.exe',
-        //'args': ['--incognito'],
+        'args': ['--mute-audio'],
       });
       //const context = await browser.createIncognitoBrowserContext();
       const page = await browser.newPage();
@@ -91,6 +91,7 @@ async function youtube(req, res) {
                 document.querySelector(like).click();
               }
             }, like)
+            await page.waitFor(time);
             await browser.close();
           } else {
             for (let x = 0; x < arr.length; x++) {
@@ -110,6 +111,7 @@ async function youtube(req, res) {
                   document.querySelector(like).click();
                 } else (console.log("not found"));
               }, like);
+              await page.waitFor(time);
               if (x == arr.length - 1) {
                 await browser.close();
               }
